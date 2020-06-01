@@ -5,10 +5,14 @@ import RootNavigator from './RootNavigator';
 
 import modalReducer from './reducers/modalReducer';
 import playVideo from './reducers/playVideo';
+import questionReducer from './reducers/questionReducer';
+import userAnswerReducer from './reducers/userAnswerReducer';
 
 const rootReducer = combineReducers({
     modalReducer,
-    playVideo
+    playVideo,
+    questionReducer,
+    userAnswerReducer
 });
 
 const INITIAL_STATE = {}

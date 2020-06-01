@@ -23,20 +23,19 @@ import InitQuestion from '../itemComponent/InitQuestion';
 import SideBar from '../itemComponent/SideBar';
 import Clock from '../itemComponent/Clock';
 import ModalEndExam from '../itemComponent/ModalEndExam';
-
+import {data} from '../data/Question';
 
 const InitExam = (props) => {
     const { navigation, route } = props;
     const { mainId,itemId,positionExam } = route.params;
     const [drawer, setDrawer] = useState();
-    
+    const listQuestion = useSelector(state => state.questionReducer)[positionExam].exams;
     const closeDrawer = () => {
         drawer._root.close();
     };
     const openDrawer = () => { 
         drawer._root.open();
     };
-    
     
     const dispatch = useDispatch();
 
@@ -45,11 +44,13 @@ const InitExam = (props) => {
             type: "OPEN_MODAL"
         })
     }
+    var userAnswerState = useSelector(state => state.userAnswerReducer);
+    console.log(userAnswerState.length);
     
     return (
         <Drawer 
         ref={(ref) => setDrawer(ref)} 
-        content={<SideBar navigator={navigator} data = {data} />} 
+        content={<SideBar navigator={navigator} data = {listQuestion} />} 
         onClose={closeDrawer} 
         >
             <Container>
@@ -62,7 +63,7 @@ const InitExam = (props) => {
                         </Button>
                     </Left>
                     <Body>
-                        <Title>Đề thi số {positionExam}</Title>
+                        <Title>Đề thi {itemId == "ListExam" ? " số " + positionExam : " ngẫu nhiên"}</Title>
                     </Body>
                     <Right >
                         <Clock />
@@ -83,118 +84,42 @@ const InitExam = (props) => {
                 renderTabBar={()=> <ScrollableTab />}
                 >
                     {
-                        data == undefined ? <Spinner style={{flex:1}}/> : data.map((item, index) => {
-                            const heading = "Câu "+ (index + 1);
-                            return (
-                                <Tab heading={heading} 
-                                tabStyle={{backgroundColor: color.header }}
-                                activeTabStyle={{backgroundColor: color.header }}>
-                                    <InitQuestion question={item} />
-                                </Tab>
-                            );
+                        data == undefined ? <Spinner style={{flex:1}}/> : data.map((item) => {
+                            const {questions} = item;
+                            var index_q = 1;
+                            return questions.map(question => {
+                                if(listQuestion.indexOf(question.id) != -1) {
+                                    const heading = "Câu "+ index_q;
+                                    dispatch({
+                                        type: "SET_USER_STATE",
+                                        value: {
+                                            "index": index_q,
+                                            "questionID": question.id,
+                                            "content": question.content,
+                                            "img": question.img,
+                                            "answers": question.answers,
+                                            "userAnswers": null,
+                                            "isPass": null,
+                                            "explain": question.explain
+                                        }
+                                    })
+                                    index_q++;
+                                    return (
+                                        <Tab heading={heading} 
+                                        tabStyle={{backgroundColor: color.header }}
+                                        activeTabStyle={{backgroundColor: color.header }}>
+                                            <InitQuestion question={question} index={index_q} />
+                                        </Tab>
+                                    );
+                                }
+                            })
                         })
                     }
                 </Tabs>
-                <ModalEndExam />
+                <ModalEndExam {...props} />
             </Container>
             
         </Drawer>
     );
 }
-
-const data = [
-    {
-        question: "1",
-        questionContent: "noi dung cau 1",
-        answers: [
-            {
-                id: 1,
-                answer: "1. dap an 1",
-                pass: true,
-            },
-            {
-                id: 2,
-                answer: "2. dap an 2",
-                pass: true,
-            },
-            {
-                id: 3,
-                answer: "3. dap an 3",
-                pass: false,
-            },
-            {
-                id: 4,
-                answer: "4. dap an 4",
-                pass: false,
-            },
-        ],
-        status: null,
-    },
-    {
-        question: "2",
-        questionContent: "noi dung cau 2",
-        answers: [
-            {
-                id: 4,
-                answer: "1. dap an 1",
-                pass: true,
-            },
-            {
-                id: 5,
-                answer: "2. dap an 2",
-                pass: true,
-            },
-            {
-                id: 6,
-                answer: "3. dap an 3",
-                pass: false,
-            },
-        ],
-        status: null,
-    },
-    {
-        question: "3",
-        questionContent: "noi dung cau 3",
-        answers: [
-            {
-                id: 7,
-                answer: "1. dap an 1",
-                pass: true,
-            },
-            {
-                id: 8,
-                answer: "2. dap an 2",
-                pass: false,
-            },
-            {
-                id: 9,
-                answer: "3. dap an 3",
-                pass: false,
-            },
-        ],
-        status: null,
-    },
-    {
-        question: "4",
-        questionContent: "noi dung cau 4",
-        answers: [
-            {
-                id: 10,
-                answer: "1. dap an 1",
-                pass: true,
-            },
-            {
-                id: 11,
-                answer: "2. dap an 2",
-                pass: false,
-            },
-            {
-                id: 12,
-                answer: "3. dap an 3",
-                pass: false,
-            },
-        ],
-        status: null,
-    },
-];
 export default InitExam;

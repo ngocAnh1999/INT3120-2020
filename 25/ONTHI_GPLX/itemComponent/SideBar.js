@@ -28,13 +28,17 @@ const SideBar = (props) => {
                     }} 
                 >
                 {
-                    data.map(item => {
+                    data.map((item,index) => {
+                        
                         return <Card transparent>
-                            <CardItem style={{marginRight: 4,}}>
-                                <Text>{item.question}</Text>
-                            </CardItem>
-                        </Card>
-                    })
+                                    <CardItem 
+                                    // onPress = {} // khi click vào thì chuyển đến tab câu hỏi đó
+                                    style={{marginRight: 4, width: 60, justifyContent: 'center'}}>
+                                        <Text>{index + 1}</Text>
+                                    </CardItem>
+                                </Card>
+                        })
+                        
                 }
                 </ListItem>
 

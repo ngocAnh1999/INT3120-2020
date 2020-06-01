@@ -10,25 +10,31 @@ import {
 } from 'native-base';
 import { styles } from '../Component/Style.js';
 import MyHeader from '../itemComponent/Header';
-import { dataTypeQuestion } from '../data/TypeQuestion';
+import { useSelector, useDispatch } from 'react-redux';
+import { data } from '../data/Question';
 
 const ReviewQuestion = (props) => {
     
     const { navigation,route } = props;
     const { itemId,mainId } = route.params;
-
+    // const {data} = useSelector(state => ({...state.questionReducer}));
     return (
         <Container>
             <MyHeader title="Ôn tập câu hỏi" itemId={itemId} mainId={mainId} navigation={navigation} />
             <Content>
                 {
-                    dataTypeQuestion==undefined ? <Spinner style={{marginTop: 200}}/> : dataTypeQuestion.map((item) => {
-                        const {id, type, name, description} = item;
+                    data==undefined ? <Spinner style={{marginTop: 200}}/> : 
+                    data.map((item) => {
+                        const {id, type, description} = item;
                         return <ListItem 
-                        //onPress={}
+                        onPress={() => navigation.navigate("ListQuestion", {
+                            itemId: id,
+                            mainId: mainId,
+                            title: type
+                        })}
                         key={id}>
                             <Body>
-                                <H3 style={styles.Heading}>{name}</H3>
+                                <H3 style={styles.Heading}>{type}</H3>
                                 <Text style={styles.subText}>{description}</Text>
                             </Body>
                         </ListItem>

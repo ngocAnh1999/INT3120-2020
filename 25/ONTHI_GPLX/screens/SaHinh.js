@@ -17,7 +17,7 @@ const SaHinh = (props) => {
     const { navigation,route } = props;
     const { itemId,mainId } = route.params;
 
-    const {video, data } = dataSaHinh;
+    const { video, data } = dataSaHinh;
 
     return (
         <Container>
@@ -25,9 +25,10 @@ const SaHinh = (props) => {
             <Content>
                 <List style={{padding: 8}}>
                     <H2 style={{textAlign: 'center'}}>Hướng dẫn 11 bài thi sa hình</H2>
-                    <TouchableWithoutFeedback>
+                    {/* <TouchableWithoutFeedback>
+                        
                         <H3>{video}</H3>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
                     {        
                         data==undefined ? <Spinner style={{flex:1}}/> : 
                         data.map(it => {

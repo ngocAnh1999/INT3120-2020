@@ -13,7 +13,9 @@ const InitExam = React.lazy(()=> import('./screens/initExam'));
 const TipRemember = React.lazy(()=> import('./screens/TipRemember'));
 const ReviewQuestion = React.lazy(()=> import('./screens/ReviewQuestion'));
 const SaHinh = React.lazy(()=> import('./screens/SaHinh'));
-
+const ListQuestion = React.lazy(()=> import('./screens/ListQuestion'));
+const Top50Fail = React.lazy(()=> import('./screens/Top50Fail'));
+const EndExam = React.lazy(()=>import('./screens/EndExam'));
 const Stack = createStackNavigator();
 
 const AuthNavigator = () => {
@@ -29,6 +31,9 @@ const AuthNavigator = () => {
                 <Stack.Screen name={"TipRemember"} component={TipRemember} />
                 <Stack.Screen name={"ReviewQuestion"} component={ReviewQuestion} />
                 <Stack.Screen name={"SaHinh"} component={SaHinh} />
+                <Stack.Screen name={"ListQuestion"} component={ListQuestion} />
+                <Stack.Screen name={"Top50Fail"} component={Top50Fail} />
+                <Stack.Screen name={"EndExam"} component={EndExam} />
             </Stack.Navigator>
             </Suspense>
         </NavigationContainer>

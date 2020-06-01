@@ -56,7 +56,10 @@ const ListComponent = (props) => {
             });
         }
         if (key_id == "Top50Fail") {
-            alert(key_id);
+            navigation.navigate("Top50Fail", {
+                itemId: key_id,
+                mainId: mainId
+            });
         }
     }
     const { route, navigation } = props;
