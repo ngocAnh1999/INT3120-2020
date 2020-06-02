@@ -19,7 +19,6 @@ const MyHeader = (props) => {
             <Left>
                 <Button transparent
                     onPress={() => navigation.navigate("ListComponent", {
-                        itemId: itemId,
                         mainId: mainId
                     })}
                 >

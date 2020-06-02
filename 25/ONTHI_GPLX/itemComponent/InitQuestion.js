@@ -14,7 +14,7 @@ import {color} from '../Component/color';
 import { useSelector,useDispatch } from 'react-redux';
 
 const InitQuestion = (props) => {
-    const { question, index } = props;
+    const { question, positionExam,indexQuestion } = props;
     const { id,content,img, answers } = question;
     const [answerState, setAnswerState] = useState();
     const dispatch = useDispatch();
@@ -32,12 +32,15 @@ const InitQuestion = (props) => {
         );
 
     }, []);
-    var userAnswerState = useSelector(state => state.userAnswerReducer);
-    var indexUserAnswer = null;
-    for(let i = 0; i < userAnswerState.length; i++) {
-        if(userAnswerState[i].questionID = id) {
-            indexUserAnswer = i;
-        }
+    function updateUserAnswer(data) {
+        dispatch({
+            type: "UPDATE_USER_ANSWER",
+            position: positionExam - 1,
+            value: {
+                "index": indexQuestion,
+                "userAnswers": data
+            }
+        })
     }
     return (
         <List>
@@ -59,36 +62,25 @@ const InitQuestion = (props) => {
                                 color={item.box_color}
                                 checked={item.select}
                                 onPress={
-                                    () => setAnswerState(
-                                        answerState.map(data => {
-                                            if(item.id == data.id) {
-                                                if(!data.select) {
-                                                    data.select = true;
-                                                    data.box_color = color.CorrectCheckBox;
+                                    () => {
+                                        
+                                        setAnswerState(
+                                            answerState.map(data => {
+                                                if(item.id == data.id) {
+                                                    if(!data.select) {
+                                                        
+                                                        data.box_color = color.CorrectCheckBox;
+                                                    }
+                                                    else {
+                                                        
+                                                        data.box_color = color.BaseCheckBox;
+                                                    }
+                                                    data.select = !data.select;
                                                 }
-                                                else {
-                                                    data.select = false;
-                                                    data.box_color = color.BaseCheckBox;
-                                                }
-                                            }
-                                            dispatch({
-                                                type: "UPDATE_USER_ANSWER",
-                                                position: indexUserAnswer,
-                                                value: {
-                                                    "index": index,
-                                                    "questionID": question.id,
-                                                    "content": question.content,
-                                                    "img": question.img,
-                                                    "answers": question.answers,
-                                                    "userAnswers": data,
-                                                    "isPass": null,
-                                                    "explain": question.explain
-                                                }
-                                            })
-                                            // console.log(userAnswerState[indexUserAnswer].explain)
-                                            return data;
-                                        })
-                                    )
+                                                return data;
+                                            }))
+                                        updateUserAnswer(answerState);
+                                    }
                                 }
                                 
                                 />

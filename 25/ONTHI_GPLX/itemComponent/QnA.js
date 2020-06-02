@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React from 'react';
 import {
     List,
     ListItem, 
@@ -18,28 +18,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 const QnA = (props) => {
     const { question } = props;
     const { content,img, answers, explain } = question;
-    const [answerState, setAnswerState] = useState();
-    useLayoutEffect( () => {    
-        setAnswerState(
-            answers.map(item => {
-                var select = false;
-                var box_color = color.BaseCheckBox;
-                if(item.check == 1){
-                    select = true;
-                    box_color = color.CorrectCheckBox;
-                } 
-
-                return {
-                    select: select,
-                    box_color: box_color,
-                    id: item.id,
-                    answer: item.answer,
-                    pass: item.check,
-                }
-            })
-        );
-    }, []);
-
+    
     return (
         <ScrollView>
             <List>
@@ -53,13 +32,13 @@ const QnA = (props) => {
                     
                 </ListItem>
                 {
-                    answerState == undefined ? <Spinner style={{flex: 1}}/> : answerState.map( (item) => {
+                    answers == undefined ? <Spinner style={{flex: 1}}/> : answers.map( (item) => {
                         return <ListItem 
                                 key={item.id}
                                 button>
                                     <CheckBox
-                                    color={item.box_color}
-                                    checked={item.select}
+                                    color={item.check ? color.CorrectCheckBox : color.BaseCheckBox}
+                                    checked={item.check ? true : false}
                                     />
                                     <Body>
                                         <Text>{item.answer}</Text>

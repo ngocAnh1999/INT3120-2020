@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Container,
     Header,
@@ -22,22 +22,27 @@ import QnA from '../itemComponent/QnA';
 const EndExam = (props) => {
     const {navigation, route} = props;
     const {itemId, mainId, positionExam} = route.params;
-    const listQuestion = useSelector(state => state.questionReducer)[positionExam].exams;
+    const listQuestion = useSelector(state => state.questionReducer)[positionExam - 1].exams;
     const dispatch = useDispatch();
-    function openModal() {
+    
+    const openModal = () => {
         dispatch({
             type: "OPEN_MODAL"
         })
     }
-    const userAnswer = useSelector(state => state.userAnswerReducer);
-    // console.log(listQuestion);
+    const updateQuestionFail = (question) => {
+        dispatch({
+            type: "UPDATE_FAIL",
+            question: question
+        })
+    }
+    
     return (
-        <Container>
+        <Container style={styles.container}>
             <Header style={styles.header} hasTabs>
                 <Left>
                     <Button transparent
                         onPress={() => navigation.navigate("ListComponent", {
-                            itemId: itemId,
                             mainId: mainId
                         })}
                     >
@@ -56,6 +61,7 @@ const EndExam = (props) => {
                         style={{fontSize: 20, color: color.textButton}} solid/>
                         
                     </Button>
+                    <ModalReloadExam navigation={navigation} route={route} />
                     
                 </Right>
             </Header>
@@ -66,30 +72,40 @@ const EndExam = (props) => {
                 >
                 
                     {
-                        userAnswer == undefined ? <Spinner style={{flex:1}}/> : userAnswer.map((item) => {
+                        listQuestion == undefined ? <Spinner style={{flex:1}}/> : listQuestion.map((item,index) => {
                             
-                            if(listQuestion.indexOf(item.questionID) != -1) {
-                                let textStyle = color.header;
-                                if(item.isPass == false) textStyle = "red"; 
-                                else if(item.isPass == null) textStyle = "#f57c00";
-                                const heading = "Câu "+ item.index;
-                                return (
-                                    <Tab heading={heading} 
-                                    textStyle={textStyle}
-                                    tabStyle={{backgroundColor: color.header }}
-                                    activeTabStyle={{backgroundColor: color.header }}>
-                                        {
-                                            item.userAnswers == null ? <QnA question={item} />
-                                            : <ResultQuestion question={item} />
-                                        }
-                                    </Tab>
-                                );
-                            }
+                            let textStyle = color.textButton;
+                            if(item.userAnswers != null) {
+                                updateQuestionFail(item)
+                                for(let i = 0; i < item.userAnswers.length; i++) {
+                                    if(item.userAnswers[i].select != item.userAnswers[i].check) {
+                                        textStyle = "#ff1744";
+                                        break;
+                                    }
+                                }
 
+                            }
+                            else textStyle = "#ffee58";
+
+                                
+                            const heading = "Câu "+ (index+1);
+                            
+                            return (
+                                <Tab heading={heading} 
+                                activeTextStyle={{color: textStyle}}
+                                tabStyle={{backgroundColor: color.header }}
+                                activeTabStyle={{backgroundColor: color.header }}>
+                                    {
+                                        item.userAnswers != null && item.userAnswers != undefined ? <ResultQuestion question={item} />
+                                        : <QnA question={item} />
+                                    }
+                                </Tab>
+                            );
+                        
                         })
                     }
                 </Tabs>
-            <ModalReloadExam navigation={navigation} route={route} />
+            
         </Container>
     );
 

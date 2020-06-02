@@ -5,7 +5,9 @@ import {View} from 'react-native';
 import { color } from '../Component/color';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
-const Clock = () => {
+const Clock = (props) => {
+    const { navigation, route } = props;
+    const { mainId,itemId,positionExam } = route.params;
     var timeLast = new Date();
     timeLast.setMinutes(timeLast.getMinutes() + 15);
     const vaidateTime = (time) => {
@@ -44,9 +46,13 @@ const Clock = () => {
             style={{fontSize: 20, color: color.textButton, marginRight: 8}} />
         {
             timeLeft.minutes == null && timeLeft.seconds == null ? 
-            <Text>
-                Break time
-            </Text> : <Text style={{color: color.textButton}}>
+            navigation.navigate("EndExam",
+                        {
+                            itemId: itemId,
+                            mainId: mainId,
+                            positionExam: positionExam,
+                        }) :
+            <Text style={{color: color.textButton}}>
                 {timeLeft.minutes} : {timeLeft.seconds}
             </Text>
         }

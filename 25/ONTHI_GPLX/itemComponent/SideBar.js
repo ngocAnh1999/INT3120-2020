@@ -28,7 +28,7 @@ const SideBar = (props) => {
                     }} 
                 >
                 {
-                    data.map((item,index) => {
+                    data == undefined ? null : data.map((item,index) => {
                         
                         return <Card transparent>
                                     <CardItem 

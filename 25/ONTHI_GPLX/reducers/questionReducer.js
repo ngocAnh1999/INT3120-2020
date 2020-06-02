@@ -14,10 +14,17 @@ function exam(data) {
                 if(lenData < 20) break;
             }
             while(initExams.indexOf(id_question) != -1);
-            
-            initExams.push(id_question);
+            const question = null;
+            for (let i = 0; i < data.length; i++) {
+                question = data[i].questions.find(item => item.id == id_question);
+                if(question != null || question != undefined) break;
+            }
+            let value = {
+                ...question, "userAnswers": null
+                
+            }
+            initExams.push(value);
         }
-        initExams.sort();
         exams.push({
             "id_exam": i +1,
             "exams": initExams
@@ -27,6 +34,16 @@ function exam(data) {
 }
 export default function questionReducer (state = exam(data), action) {
     switch (action.type) {
+        case "UPDATE_USER_ANSWER":
+            state[action.position].exams[action.value.index].userAnswers = action.value.userAnswers;
+            return state;
+        case "DELETE_USER_STATE":
+            state.forEach(item => {
+                item.exams.forEach(question => {
+                    question.userAnswers = null;
+                })
+            });
+            return state;
         default:
             return state;
     }

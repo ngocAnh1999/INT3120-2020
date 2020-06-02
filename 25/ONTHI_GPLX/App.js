@@ -6,13 +6,13 @@ import RootNavigator from './RootNavigator';
 import modalReducer from './reducers/modalReducer';
 import playVideo from './reducers/playVideo';
 import questionReducer from './reducers/questionReducer';
-import userAnswerReducer from './reducers/userAnswerReducer';
+import questionFailReducer from './reducers/questionFailReducer';
 
 const rootReducer = combineReducers({
     modalReducer,
     playVideo,
     questionReducer,
-    userAnswerReducer
+    questionFailReducer
 });
 
 const INITIAL_STATE = {}

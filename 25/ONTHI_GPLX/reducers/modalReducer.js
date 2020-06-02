@@ -1,15 +1,14 @@
-export default function modalReducer (state = {isVisiable: false}, action) {
+
+export default function modalReducer (state = false, action) {
+
     switch (action.type) {
         case "OPEN_MODAL":
-            return {
-                ...state,
-                isVisiable: true
-            }
+            state = true;
+            return state;
         case "CLOSE_MODAL":
-            return {
-                ...state,
-                isVisiable: false
-            }
+            state = false;
+            return state;
+        
         default:
             return state;
     }

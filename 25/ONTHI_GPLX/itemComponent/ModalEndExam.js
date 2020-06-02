@@ -9,7 +9,7 @@ import { color } from '../Component/color';
 const ModalEndExam = (props) => {
     const {navigation,route} = props;
     const {itemId, mainId, positionExam} = route.params;
-    const {isVisiable} = useSelector(state => ({...state.modalReducer}));
+    const isVisiable = useSelector(state => state.modalReducer);
     const dispatch = useDispatch();
     function onCloseModal() {
         dispatch({
@@ -30,16 +30,12 @@ const ModalEndExam = (props) => {
                         <Text style={{ color: 'black', opacity: 0.83}}>Hủy</Text>
                     </Button>
                     <Button style={{ padding: 8, backgroundColor: 'green', borderRadius: 3}}
-                    onPress={() => {
-                        onCloseModal();
-                        return navigation.navigate("EndExam",
-                        {
-                            itemId: itemId,
-                            mainId: mainId,
-                            positionExam: positionExam,
-                        }
-                    )
-                    }}
+                    onPress={() => navigation.navigate("EndExam",
+                    {
+                        itemId: itemId,
+                        mainId: mainId,
+                        positionExam: positionExam,
+                    })}
                     >
                         <Text style={{ color: 'white'}}>Kết thúc</Text>
                     </Button>

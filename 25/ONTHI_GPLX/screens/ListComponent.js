@@ -15,11 +15,15 @@ import { color } from '../Component/color';
 
 
 const ListComponent = (props) => {
+    const { navigation, route } = props;
+    const { mainId } = route.params;
     const onPress = (key_id) => {
-        const { navigation, route } = props;
-        const { mainId } = route.params;
         if (key_id == "randomExam") {
-            alert(key_id);
+            navigation.navigate("initExam", {
+                itemId: key_id,
+                mainId: mainId,
+                positionExam: parseInt(Math.random()*100%15) + 1
+            });
         }
         if (key_id == "ListExam") {
             navigation.navigate("ListTopicExam", {
@@ -28,7 +32,10 @@ const ListComponent = (props) => {
             });
         }
         if (key_id == "CheckFalseQuestion") {
-            alert(key_id);
+            navigation.navigate("QuestionFalse", {
+                itemId: key_id,
+                mainId: mainId
+            });
         }
         if (key_id == "ReviewQuestion") {
             navigation.navigate("ReviewQuestion", {
@@ -62,8 +69,6 @@ const ListComponent = (props) => {
             });
         }
     }
-    const { route, navigation } = props;
-    const { mainId } = route.params;
 
     return (
         <Container style={styles.container}>

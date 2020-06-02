@@ -7,16 +7,24 @@ import { useSelector, useDispatch } from 'react-redux';
 const ModalReloadExam = (props) => {
     const {navigation, route} = props;
     const {itemId, mainId, positionExam} = route.params;
-    const {isVisiable} = useSelector(state => ({...state.modalReducer}));
-    const listQuestion = useSelector(state => state.questionReducer)[positionExam].exams;
+    const isVisible = useSelector(state => state.modalReducer);
+    
     const dispatch = useDispatch();
     function onCloseModal() {
         dispatch({
             type: "CLOSE_MODAL"
         })
     }
+    function deleteUserAnswer(){
+        dispatch({
+            type: "DELETE_USER_STATE",
+            position: positionExam - 1,
+            
+        })
+        
+    }
     return (
-        <Modal isVisible={isVisiable}>
+        <Modal isVisible={isVisible}>
             <View style={{backgroundColor: 'white', padding: 16, height: 130, borderRadius: 3}}>
                 <View style={{marginBottom: 16}}>
                     <Text style={{ fontSize: 15}}>Làm lại bài thi?</Text>
@@ -30,13 +38,7 @@ const ModalReloadExam = (props) => {
                     </Button>
                     <Button style={{ padding: 8, backgroundColor: 'green', borderRadius: 3}}
                     onPress={() => {
-                        const userState = useSelector(state => state.userAnswerReducer);
-                        console.log(userState);
-                        dispatch({
-                            type: "DELETE_USER_STATE",
-                            listQuestion: listQuestion
-                        })
-                        // onCloseModal;
+                        deleteUserAnswer();
                         return navigation.navigate("initExam",
                             {
                                 itemId: itemId,

@@ -6,27 +6,17 @@ export default function userAnswerReducer (state = initState, action) {
             for(let i = 0; i < state.length; i++) {
                 if(state[i].questionID == action.value.questionID) {
                     state[i] = action.value;
+                    console.log("log check exit true" + state[i].questionID);
                     checkExit = true;
-                    break;
                 }
             }
-            if(checkExit == false) state.push(action.value);
-            return state;
-        case "UPDATE_USER_ANSWER":
-            if(action.position == null) state.push(action.value);
-            else {
-                state[action.position] = action.value;
-                console.log(state.length);
+            if(checkExit == false) {
+                console.log("checkExit false: " + action.value.questionID);
+                state.push(action.value);
             }
+            // console.log("SET_USER_STATE "+ action.value);
             return state;
-        case "DELETE_USER_STATE":
-            for (let i = 0; i < state.length; i++) {
-                let questionID = state[i].questionID;
-                if(action.listQuestion.indexOf(questionID) != -1) {
-                    delete state[i];
-                }
-            }
-            return state;
+        
         default:
             return state;
     }
